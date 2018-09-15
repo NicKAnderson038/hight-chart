@@ -1,0 +1,172 @@
+/* body {
+  background-color: #47475c;
+} */
+
+/* .header-image {
+  box-shadow: 0 0 1px 3px #000 inset;
+  width: 100%;
+  min-height: 60px;
+} */
+body {
+  padding-right: 80px;
+  padding-left: 80px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: sans-serif;
+}
+
+.font-white-1 {
+  color: white;
+  padding-left: 20px;
+}
+
+.project-container {
+  display: inline-block;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.top-selecters {
+  display: flex;
+  background-color: lightgray;
+  border-radius: 5px;
+  /* padding-top: 10px;
+  padding-bottom: 10px; */
+  padding: 10px 10px 10px 20px;
+}
+.top-selector {
+  margin-right: 10px;
+}
+select {
+  border: none;
+  width: 140px;
+  height: 20px;
+}
+
+.fourth-selector {
+  margin-left: 40% !important;
+  margin-top: 6px !important;
+}
+/* .selectdiv select {  
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  height: 50px;
+  float: right;
+  margin: 5px 0px;
+  padding: 0px 24px;
+  font-size: 16px;
+  line-height: 1.75;
+  color: #333;
+  background-color: #ffffff;
+  background-image: none;
+  border: 1px solid #cccccc;
+  -ms-word-break: normal;
+  word-break: normal;
+} */
+
+.main {
+  display: flex;
+}
+
+.container2 {
+  background-color: #26c6da;
+  /* width: 100%; */
+  z-index: 10;
+}
+
+.inner-container2 {
+  margin-top: 6px;
+  display: flex;
+}
+
+.school-listing {
+  /* display: inline-block;
+  min-width: 200px; */
+  color: #0d47a1;
+  background-color: #81d4fa;
+  width: 300px;
+}
+
+/* BEGIN bar graph*/
+#bar-graph {
+  /* max-width: 200px; */
+}
+/* .highcharts-grid-line {
+  display: none !important;
+}
+.highcharts-axis-line {
+  display: none !important;
+}
+.highcharts-tick {
+  display: none !important;
+} */
+/* text {
+  display: none !important;
+} */
+
+.highcharts-color-0:first-child {
+  fill: #0d47a1;
+  stroke: #0d47a1;
+}
+.highcharts-color-0:last-child {
+  fill: #00838f;
+  stroke: #00838f;
+}
+
+text:first-child {
+  color: #0d47a1 !important;
+  font-size: 14px !important;
+  font-weight: bold;
+}
+text:last-child {
+  color: #00838f !important;
+  font-size: 14px !important;
+  font-weight: bold;
+}
+
+@media screen and (max-width: 1000px) {
+  .container2 {
+    right: 100px;
+    position: relative;
+  }
+  .pie-container {
+    position: relative;
+    right: 50px;
+  }
+}
+
+#test:before {
+  content: "";
+  position: absolute;
+  left: -6px;
+  width: 50%;
+  height: 16px;
+  top: 100px;
+  background-color: #b2ebf2;
+  -webkit-transform: skew(-40deg);
+  -moz-transform: skew(-40deg);
+  -o-transform: skew(-40deg);
+  -ms-transform: skew(-40deg);
+  transform: skew(-40deg);
+}
+#test:after {
+  content: "";
+  position: absolute;
+  right: -6px;
+  width: 50%;
+  height: 16px;
+  top: 100px;
+  background-color: #b2ebf2;
+  -webkit-transform: skew(40deg);
+  -moz-transform: skew(40deg);
+  -o-transform: skew(40deg);
+  -ms-transform: skew(40deg);
+  transform: skew(40deg);
+}
