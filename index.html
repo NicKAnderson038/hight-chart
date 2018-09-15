@@ -6,6 +6,7 @@
     <title> Highcharts directive demo </title>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
     <script type="text/javascript" src="https://code.highcharts.com/highcharts.js"></script>
+    <script type="text/javascript" src="./data/csulb.js"></script>
     <link rel="stylesheet" type="text/css" href="styles/styles.css" />
     <style>
         #container {
@@ -38,20 +39,20 @@
     <br>
     <div class="project-container">
         <div class="top-selecters selectdiv">
-            <select class="top-selector" name="_a" ng-model="campus" ng-options="campus.campus for campus in campus_data track by $index"
+            <select class="top-selector" name="_a" ng-model="selected_campus" ng-options="campus.campus for campus in list_campus"
                 ng-change="campusItemChanged()">
             </select>
-            <select class="top-selector" name="_a" ng-model="college" ng-options="college.college for college in college_data track by $index"
+            <select class="top-selector" name="_a" ng-model="selected_college" ng-options="college.college for college in list_college"
                 ng-change="collegeItemChanged()">
             </select>
-            <select class="top-selector" name="_a" ng-model="major" ng-options="major.major for major in major_data track by $index"
+            <select class="top-selector" name="_a" ng-model="selected_major" ng-options="major.major for major in list_major"
                 ng-change="majorItemChanged()">
             </select>
         </div>
         <br>
         <div class="main">
             <div id="container">
-                <hc-pie-chart title="Browser usage" style="max-width: 200px;" class="pie-container" data="pieData">Placeholder
+                <hc-pie-chart title="{{pieMain}}" style="max-width: 200px;" class="pie-container" data="pieData">Placeholder
                     for pie chart</hc-pie-chart>
             </div>
             <div class="container2">
@@ -67,7 +68,8 @@
                 </div>
             </div>
         </div>
-        <script>
+        <script type="text/javascript">
+            // const MAIN_DATA = require('./data/csulb.js');
             angular.module('myModule', [])
                 // Directive for generic chart, pass in chart options
                 .directive('hcChart', function () {
@@ -92,6 +94,7 @@
                             data: '='
                         },
                         link: function (scope, element) {
+                            console.log(scope.title)
                             Highcharts.chart(element[0], {
                                 chart: {
                                     type: 'pie',
@@ -99,7 +102,7 @@
                                     events: {
                                         load: function () {
 
-                                            this.renderer.label("<div class='transactions' style='fontSize:20px !important;'><img style='position:relative; top:7px;' src='img/gradcap-8.png'/></div><div style='color:white;'>23%</div>", 228, 156, null, null, null, true).add();
+                                            this.renderer.label(`<div class='transactions' style='fontSize:20px !important;'><img style='position:relative; top:7px;' src='img/gradcap-8.png'/></div><div style='color:white;'>${scope.title}</div>`, 228, 156, null, null, null, true).add();
                                         }
                                     },
                                     // backgroundColor: 'rgba(0,0,0,0)'
@@ -126,17 +129,37 @@
                     };
                 })
                 .controller('myController', ['$scope', 'SearchService', function ($scope, SearchService) {
-
+                    // $scope.campus1
+                    // $scope.college1
+                    // $scope.major1
                     //3x drop downs - defaults
-                    $scope.campus_data = [
-                        { "campus": "Long Beach" }
+                    $scope.pieMain = 00
+
+                    $scope.list_campus = [
+                        { "campus": "San Diego" },
+                        { "campus": "Fullerton" },
+                        { "campus": "Riverside" }
                     ];
-                    $scope.college_data = [
-                        { "college": "College of Science" }
+                    $scope.selected_campus = $scope.list_campus[1]
+
+                    $scope.list_college = [
+                        { "college": "College of Clowns" }
                     ];
-                    $scope.major_data = [
-                        { "major": "History" }
+                    $scope.selected_college = $scope.list_college[0]
+
+                    $scope.list_major = [
+                        { "major": "BS" }
                     ];
+                    $scope.selected_major = $scope.list_major[0]
+
+                    $scope.pie_cap = [
+                        // { "p_postbac_major": 0.20 }
+                    ];
+                    // $scope.title = $scope.pie_cap[0]
+
+
+                    $scope.selected_campus = $scope.list_campus[1]
+
                     $scope.fouthDropDown_data = [
                         { "name": "URM/Non-URM" },
                         { "name": "Pell" },
@@ -144,18 +167,39 @@
                         { "name": "1st Gen/Non-1st Gen" }
                     ];
 
+                    const piePercentage = () => {
+                        let value;
+                        MAIN_DATA.filter((val, i) => {
+                            // console.log(val.campus,  $scope.selected_campus.campus)
+                            if ($scope.selected_college.college === val.college &&
+                                $scope.selected_campus.campus === val.campus &&
+                                $scope.selected_major.major === val.major) {
+                                    console.log(val.p_postbac_major)
+                                return value = val.p_postbac_major
+                                
+                            }
+                        })
+                        $scope.pieMain = value
+                        console.log($scope.pieMain)
+                        // console.log('RAN! ', Math.round(value * 100) + '%')
+                    }
+
                     $scope.campusItemChanged = () => {
-                        console.log($scope.campus)
+                        console.log($scope.selected_campus)
+                        piePercentage();
                     }
                     $scope.collegeItemChanged = () => {
-                        console.log($scope.college)
+                        console.log($scope.selected_college)
+                        piePercentage();
                     }
                     $scope.majorItemChanged = () => {
-                        console.log($scope.major)
+                        console.log($scope.selected_major)
+                        piePercentage();
                     }
                     $scope.fouthDropDownItemChanged = () => {
                         console.log($scope.fouthDropDown)
                     }
+                    
 
                     // Sample options for first chart
                     $scope.chartOptions = {
@@ -211,6 +255,8 @@
                     };
 
                     // Sample data for pie chart
+                    $scope.pieMain = Math.round(0.4687 * 100) + '%'
+                        
                     $scope.pieData = [
                         {
                             name: "Non-Post Graduate",
@@ -229,25 +275,29 @@
                     ]
 
                     const createTop3Dropdowns = (d) => {
+                       
                         const campus = {}
                         const college = {}
                         const major = {}
                         const arr = d.filter((item, index, self) => self.findIndex(t => t.campus === item.campus && t.college === item.college && t.major === item.major) === index).map((param) => ({ campus: param.campus, college: param.college, major: param.major }))
-                        $scope.campus_data = arr.filter(obj => !campus[obj.campus] && (campus[obj.campus] = true))
-                        $scope.campus_data.map((x, i) => {
-                            delete x.college
-                            delete x.major
-                        })
-                        $scope.college_data = arr.filter(obj => !college[obj.college] && (college[obj.college] = true))
-                        $scope.college_data.map((x, i) => {
-                            delete x.campus
-                            delete x.major
-                        })
-                        $scope.major_data = arr.filter((obj, i) => !major[obj.major] && (major[obj.major] = true))
-                        $scope.major_data.map((x, i) => {
-                            delete x.campus
-                            delete x.college
-                        })
+                        $scope.list_campus = arr.filter(obj => !campus[obj.campus] && (campus[obj.campus] = true))
+                        // $scope.campus_data.map((x, i) => {
+                        //     delete x.college
+                        //     delete x.major
+                        // })
+                        $scope.list_college = arr.filter(obj => !college[obj.college] && (college[obj.college] = true))
+                        // $scope.college_data.map((x, i) => {
+                        //     delete x.campus
+                        //     delete x.major
+                        // })
+                        $scope.list_major = arr.filter((obj, i) => !major[obj.major] && (major[obj.major] = true))
+                        // $scope.major_data.map((x, i) => {
+                        //     delete x.campus
+                        //     delete x.college
+                        // })
+                        $scope.selected_campus = $scope.list_campus[0]
+                        $scope.selected_college = $scope.list_college[0]
+                        $scope.selected_major = $scope.list_major[0]
                     }
 
                     const reduce = (data) => {
@@ -273,10 +323,10 @@
                         SearchService.service1post()
                             .then((data) => {
                                 // $scope.returnData = data;
-                                console.log('Success Response: ', data);
                                 createTop3Dropdowns(data)
-                                reduce(data)
+                                // reduce(data)
                             }).catch(error => {
+                                // createTop3Dropdowns(MAIN_DATA)
                                 console.error(`Error Response: ${error}`)
                             })
                     }
